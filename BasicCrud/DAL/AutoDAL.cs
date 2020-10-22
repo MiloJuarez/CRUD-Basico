@@ -6,51 +6,38 @@ using System.Threading.Tasks;
 using System.Data;
 using System.Data.SqlClient;
 using BasicCrud.BLL;
+using System.IO;
+using System.Windows.Forms;
+using System.Drawing;
 
 namespace BasicCrud.DAL
 {
     class AutoDAL
     {
-        public bool InsertAuto(Auto auto, SqlConnection connection)
-        {
-            try {
-                string stmt = "INSERT INTO autos(marca,modelo,anio,precio,fecha_venta) VALUES('" +
-                    auto.Marca +"','"+ auto.Modelo + "'," + auto.Anio + "," +  auto.Precio + ",'" +
-                    auto.FechaVenta + "')";
-
-                SqlCommand command = new SqlCommand();
-                command.CommandText = stmt;
-                command.Connection = connection;
-                connection.Open();
-                command.ExecuteNonQuery();
-                connection.Close();
-                return true;
-        } catch
-            {
-                return false;
-            } finally
-            {
-                connection.Close();
-            }
-
-        }
-
-        public bool UpdateAuto(Auto auto, SqlConnection connection)
+        public static string pathImageFolder = Path.GetDirectoryName(Application.StartupPath) + @"\CarImages\";
+        public int InsertUpdateAuto(Auto auto, SqlConnection connection)
         {
             try
             {
-                string stmt = "UPDATE autos SET marca = '" + auto.Marca + "', modelo='" + auto.Modelo +"',anio="
-                    + auto.Anio +",precio=" + auto.Precio +",fecha_venta='" + auto.FechaVenta +"' WHERE id = " + auto.ID;
-                SqlCommand command = new SqlCommand();
-                command.CommandText = stmt;
-                command.Connection = connection;
+                int rowAffected = 0;
                 connection.Open();
-                command.ExecuteNonQuery();
-                connection.Close();
-                return true;
+                SqlCommand command = new SqlCommand("InsertUpdateAuto", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add("@Id", SqlDbType.Int).Value = auto.ID;
+                command.Parameters.Add("@Marca", SqlDbType.VarChar).Value = auto.Marca;
+                command.Parameters.Add("@Modelo", SqlDbType.VarChar).Value = auto.Modelo;
+                command.Parameters.Add("@Anio", SqlDbType.Int).Value = auto.Anio;
+                command.Parameters.Add("@Precio", SqlDbType.Decimal).Value = auto.Precio;
+                command.Parameters.Add("@FechaVenta", SqlDbType.VarChar).Value = auto.FechaVenta;
+                command.Parameters.Add("@Imagen", SqlDbType.VarChar).Value = auto.Imagen;
+                rowAffected = command.ExecuteNonQuery();
+                return rowAffected;
             } catch
             {
-                return false;
+                return 0;
+            } finally
+            {
+                connection.Close();
             }
         }
 
@@ -72,43 +59,44 @@ namespace BasicCrud.DAL
             }
         }
 
-        public DataSet QueryData(SqlConnection connection, string field, string value)
+        public List<Auto> GetAll(SqlConnection connection)
         {
-            string campo = field, valor = value;
-            string stmt = "";
-            if(field.Length > 0 && value.Length > 0)
+
+            List<Auto> _autos = new List<Auto>();
+            using (SqlConnection con =  ConnectionDAL.GetConnection())
             {
-                if (campo.Contains("ñ"))
+                if (con != null)
                 {
-                    campo = "anio";
+                    if (con.State == ConnectionState.Closed)
+                    {
+                        con.Open();
+                        string stmt = "SELECT * FROM autos";
+                        SqlCommand command = new SqlCommand(stmt, con);
+                        SqlDataReader dataReader = command.ExecuteReader();
+                        while (dataReader.Read())
+                        {
+                            _autos.Add(GetAuto(dataReader));
+                        }
+                        con.Close();
+                    }
                 }
-                else if (campo.Contains(" "))
-                {
-                    campo = "fecha_venta";
-                }
-                stmt = "SELECT * FROM autos WHERE "+campo+" LIKE '%"+valor+"%'";
             }
-            else
-            {
-                stmt = "SELECT * FROM autos";
-            }
-                DataSet dataSet = new DataSet();
-            SqlDataAdapter adapter = new SqlDataAdapter();
-            try
-            {
-                SqlCommand sqlCommand = new SqlCommand(stmt);
-                sqlCommand.Connection = connection;
-                adapter.SelectCommand = sqlCommand;
-                connection.Open();
-                adapter.Fill(dataSet);
-                connection.Close();
-                return dataSet;
-            } catch
-            {
-                return dataSet;
-            }
+            return _autos;
         }
 
-
+        private Auto GetAuto(IDataReader reader)
+        {
+            Auto auto = new Auto
+            {
+                ID = Convert.ToInt32(reader["id"]),
+                Marca = Convert.ToString(reader["marca"]),
+                Modelo = Convert.ToString(reader["modelo"]),
+                Anio = Convert.ToInt32(reader["anio"]),
+                Precio = Convert.ToDouble(reader["precio"]),
+                FechaVenta = Convert.ToString(reader["fecha_venta"]),
+                Imagen = Convert.ToString(reader["imagen"])
+            };
+            return auto;
+        }
     }
 }

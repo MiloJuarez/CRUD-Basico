@@ -10,9 +10,9 @@ namespace BasicCrud.DAL
 {
     class ConnectionDAL
     {
-        private readonly string url = "Data Source=MILO-JUAREZ\\SERVER; Initial Catalog=catalogo_autos; Integrated Security=true";
-        public SqlConnection GetConnection()
+        public static SqlConnection GetConnection()
         {
+            string url = "Data Source=MILO-JUAREZ\\SERVER; Initial Catalog=catalogo_autos; Integrated Security=true";
             try
             {
                 SqlConnection connection = new SqlConnection(url);
