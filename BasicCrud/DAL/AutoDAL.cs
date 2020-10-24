@@ -30,6 +30,7 @@ namespace BasicCrud.DAL
                 command.Parameters.Add("@Precio", SqlDbType.Decimal).Value = auto.Precio;
                 command.Parameters.Add("@FechaVenta", SqlDbType.VarChar).Value = auto.FechaVenta;
                 command.Parameters.Add("@Imagen", SqlDbType.VarChar).Value = auto.Imagen;
+                command.Parameters.Add("@Detalle", SqlDbType.Text).Value = auto.Detalles;
                 rowAffected = command.ExecuteNonQuery();
                 return rowAffected;
             } catch
@@ -70,7 +71,7 @@ namespace BasicCrud.DAL
                     if (con.State == ConnectionState.Closed)
                     {
                         con.Open();
-                        string stmt = "SELECT * FROM autos";
+                        string stmt = "SELECT * FROM autos ORDER BY id DESC";
                         SqlCommand command = new SqlCommand(stmt, con);
                         SqlDataReader dataReader = command.ExecuteReader();
                         while (dataReader.Read())
@@ -94,7 +95,8 @@ namespace BasicCrud.DAL
                 Anio = Convert.ToInt32(reader["anio"]),
                 Precio = Convert.ToDouble(reader["precio"]),
                 FechaVenta = Convert.ToString(reader["fecha_venta"]),
-                Imagen = Convert.ToString(reader["imagen"])
+                Imagen = Convert.ToString(reader["imagen"]),
+                Detalles = Convert.ToString(reader["detalle"]),
             };
             return auto;
         }

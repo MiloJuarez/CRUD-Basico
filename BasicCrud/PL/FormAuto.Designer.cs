@@ -37,19 +37,20 @@
             this.label5 = new System.Windows.Forms.Label();
             this.txtMarca = new System.Windows.Forms.TextBox();
             this.autosBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.catalogo_autosDataSet = new BasicCrud.catalogo_autosDataSet();
             this.txtModelo = new System.Windows.Forms.TextBox();
-            this.txtPrecio = new System.Windows.Forms.MaskedTextBox();
-            this.txtAnio = new System.Windows.Forms.MaskedTextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.dtFechaVenta = new System.Windows.Forms.DateTimePicker();
-            this.autosTableAdapter = new BasicCrud.catalogo_autosDataSetTableAdapters.autosTableAdapter();
             this.picBoxAutoImg = new System.Windows.Forms.PictureBox();
             this.btnPickImg = new System.Windows.Forms.Button();
+            this.rtxtDescripcion = new System.Windows.Forms.RichTextBox();
+            this.txtPrecio = new System.Windows.Forms.NumericUpDown();
+            this.label6 = new System.Windows.Forms.Label();
+            this.txtAnio = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.autosBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.catalogo_autosDataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picBoxAutoImg)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtPrecio)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtAnio)).BeginInit();
             this.SuspendLayout();
             // 
             // lblTitulo
@@ -116,12 +117,6 @@
             // autosBindingSource
             // 
             this.autosBindingSource.DataMember = "autos";
-            this.autosBindingSource.DataSource = this.catalogo_autosDataSet;
-            // 
-            // catalogo_autosDataSet
-            // 
-            this.catalogo_autosDataSet.DataSetName = "catalogo_autosDataSet";
-            this.catalogo_autosDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // txtModelo
             // 
@@ -130,30 +125,11 @@
             this.txtModelo.Size = new System.Drawing.Size(145, 20);
             this.txtModelo.TabIndex = 7;
             // 
-            // txtPrecio
-            // 
-            this.txtPrecio.DataBindings.Add(new System.Windows.Forms.Binding("Mask", global::BasicCrud.Properties.Settings.Default, "preccio", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.txtPrecio.Location = new System.Drawing.Point(135, 184);
-            this.txtPrecio.Mask = global::BasicCrud.Properties.Settings.Default.preccio;
-            this.txtPrecio.Name = "txtPrecio";
-            this.txtPrecio.Size = new System.Drawing.Size(145, 20);
-            this.txtPrecio.TabIndex = 10;
-            // 
-            // txtAnio
-            // 
-            this.txtAnio.Location = new System.Drawing.Point(135, 147);
-            this.txtAnio.Mask = "9999";
-            this.txtAnio.Name = "txtAnio";
-            this.txtAnio.Size = new System.Drawing.Size(145, 20);
-            this.txtAnio.TabIndex = 11;
-            this.txtAnio.ValidatingType = typeof(int);
-            this.txtAnio.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ValidarAño);
-            // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(135, 273);
+            this.button1.Location = new System.Drawing.Point(181, 362);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(75, 33);
             this.button1.TabIndex = 12;
             this.button1.Text = "Guardar";
             this.button1.UseVisualStyleBackColor = true;
@@ -161,9 +137,9 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(225, 273);
+            this.button2.Location = new System.Drawing.Point(280, 362);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.Size = new System.Drawing.Size(75, 33);
             this.button2.TabIndex = 13;
             this.button2.Text = "Salir";
             this.button2.UseVisualStyleBackColor = true;
@@ -175,10 +151,6 @@
             this.dtFechaVenta.Name = "dtFechaVenta";
             this.dtFechaVenta.Size = new System.Drawing.Size(200, 20);
             this.dtFechaVenta.TabIndex = 14;
-            // 
-            // autosTableAdapter
-            // 
-            this.autosTableAdapter.ClearBeforeFill = true;
             // 
             // picBoxAutoImg
             // 
@@ -200,18 +172,77 @@
             this.btnPickImg.UseVisualStyleBackColor = true;
             this.btnPickImg.Click += new System.EventHandler(this.btnPickImg_Click);
             // 
+            // rtxtDescripcion
+            // 
+            this.rtxtDescripcion.Location = new System.Drawing.Point(135, 265);
+            this.rtxtDescripcion.Name = "rtxtDescripcion";
+            this.rtxtDescripcion.Size = new System.Drawing.Size(369, 77);
+            this.rtxtDescripcion.TabIndex = 17;
+            this.rtxtDescripcion.Text = "";
+            // 
+            // txtPrecio
+            // 
+            this.txtPrecio.DecimalPlaces = 2;
+            this.txtPrecio.Location = new System.Drawing.Point(135, 184);
+            this.txtPrecio.Maximum = new decimal(new int[] {
+            1000000000,
+            0,
+            0,
+            0});
+            this.txtPrecio.Name = "txtPrecio";
+            this.txtPrecio.Size = new System.Drawing.Size(145, 20);
+            this.txtPrecio.TabIndex = 18;
+            this.txtPrecio.Value = new decimal(new int[] {
+            1970,
+            0,
+            0,
+            0});
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(37, 265);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(48, 13);
+            this.label6.TabIndex = 19;
+            this.label6.Text = "Detalles:";
+            // 
+            // txtAnio
+            // 
+            this.txtAnio.Location = new System.Drawing.Point(135, 147);
+            this.txtAnio.Maximum = new decimal(new int[] {
+            2040,
+            0,
+            0,
+            0});
+            this.txtAnio.Minimum = new decimal(new int[] {
+            1970,
+            0,
+            0,
+            0});
+            this.txtAnio.Name = "txtAnio";
+            this.txtAnio.Size = new System.Drawing.Size(145, 20);
+            this.txtAnio.TabIndex = 20;
+            this.txtAnio.Value = new decimal(new int[] {
+            1970,
+            0,
+            0,
+            0});
+            // 
             // FormAuto
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(526, 383);
+            this.ClientSize = new System.Drawing.Size(526, 430);
+            this.Controls.Add(this.txtAnio);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.txtPrecio);
+            this.Controls.Add(this.rtxtDescripcion);
             this.Controls.Add(this.btnPickImg);
             this.Controls.Add(this.picBoxAutoImg);
             this.Controls.Add(this.dtFechaVenta);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.txtAnio);
-            this.Controls.Add(this.txtPrecio);
             this.Controls.Add(this.txtModelo);
             this.Controls.Add(this.txtMarca);
             this.Controls.Add(this.label5);
@@ -223,8 +254,9 @@
             this.Name = "FormAuto";
             this.Text = "FormAuto";
             ((System.ComponentModel.ISupportInitialize)(this.autosBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.catalogo_autosDataSet)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picBoxAutoImg)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtPrecio)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtAnio)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -240,15 +272,15 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox txtMarca;
         private System.Windows.Forms.TextBox txtModelo;
-        private System.Windows.Forms.MaskedTextBox txtPrecio;
-        private System.Windows.Forms.MaskedTextBox txtAnio;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.DateTimePicker dtFechaVenta;
-        private catalogo_autosDataSet catalogo_autosDataSet;
         private System.Windows.Forms.BindingSource autosBindingSource;
-        private catalogo_autosDataSetTableAdapters.autosTableAdapter autosTableAdapter;
         private System.Windows.Forms.PictureBox picBoxAutoImg;
         private System.Windows.Forms.Button btnPickImg;
+        private System.Windows.Forms.RichTextBox rtxtDescripcion;
+        private System.Windows.Forms.NumericUpDown txtPrecio;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.NumericUpDown txtAnio;
     }
 }

@@ -25,6 +25,7 @@ namespace BasicCrud
             rowIdx = 0;
             InitializeComponent();
             CargarAutos();
+            dgvAutos.Columns[0].ValueType = typeof(bool);
         }
 
         private void btnAgregar_Click(object sender, EventArgs e)
@@ -39,6 +40,7 @@ namespace BasicCrud
             {
                 FormAuto formAuto = new FormAuto(auto, this);
                 formAuto.Show();
+
             }
             else
             {
@@ -49,17 +51,18 @@ namespace BasicCrud
 
         private void btnBorrar_Click(object sender, EventArgs e)
         {
-            List<DataGridViewRow> rowSelected = new List<DataGridViewRow>();
+            bool isChecked = false;
             foreach (DataGridViewRow row in dgvAutos.Rows)
             {
-                if (Convert.ToBoolean(row.Cells["select"].Value) == true)
+                if (Convert.ToBoolean(row.Cells[0].Value) == true)
                 {
-                    rowSelected.Add(row);
+                    isChecked = true;
+                    GetAuto(row.Index);
+                    break;
                 }
             }
-            if (rowSelected.Count > 0)
+            if (isChecked)
             {
-                string deleteMsg = rowSelected.Count == 1 ? "auto "+auto.Marca : "los autos seleccionados";
                 if (MessageBox.Show("¿Eliminar auto " + auto.Marca + "?", "Eliminar",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
@@ -67,10 +70,18 @@ namespace BasicCrud
                     int idAuto = auto.ID;
                     autoDAL.deleteAuto(idAuto, ConnectionDAL.GetConnection());
                     listAutos.Remove(auto);
-                    DataGridViewRow dataGridViewRow = dgvAutos.Rows[rowIdx];
-                    dgvAutos.Rows.Remove(dataGridViewRow);
-                    File.Delete(AutoDAL.pathImageFolder + auto.Imagen);
+                    CargarAutos();
+                    if (auto.Imagen != "default_car_image.png")
+                    {
+                        File.Delete(AutoDAL.pathImageFolder + auto.Imagen);
+                    }
+                    auto = null;
+                    dgvAutos.CurrentRow.Selected = false;
                 }
+            } else
+            {
+                MessageBox.Show("Selecciona un auto para continuar", "No hay selección",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
@@ -78,16 +89,22 @@ namespace BasicCrud
         {
             if (e.RowIndex >= 0)
             {
-                auto = new Auto();
-                rowIdx = e.RowIndex;
-                auto.ID = int.Parse(dgvAutos.Rows[rowIdx].Cells[1].Value.ToString());
-                auto.Marca = dgvAutos.Rows[rowIdx].Cells[2].Value.ToString();
-                auto.Modelo = dgvAutos.Rows[rowIdx].Cells[3].Value.ToString();
-                auto.Anio = int.Parse(dgvAutos.Rows[rowIdx].Cells[4].Value.ToString());
-                auto.Precio = int.Parse(dgvAutos.Rows[rowIdx].Cells[5].Value.ToString());
-                auto.FechaVenta = dgvAutos.Rows[rowIdx].Cells[6].Value.ToString();
-                auto.Imagen = dgvAutos.Rows[rowIdx].Cells[8].Value.ToString();
+                GetAuto(e.RowIndex);
             }
+        }
+
+        private void GetAuto(int index)
+        {
+            auto = new Auto();
+            rowIdx = index;
+            auto.ID = int.Parse(dgvAutos.Rows[rowIdx].Cells[1].Value.ToString());
+            auto.Marca = dgvAutos.Rows[rowIdx].Cells[2].Value.ToString();
+            auto.Modelo = dgvAutos.Rows[rowIdx].Cells[3].Value.ToString();
+            auto.Anio = int.Parse(dgvAutos.Rows[rowIdx].Cells[4].Value.ToString());
+            auto.Precio = int.Parse(dgvAutos.Rows[rowIdx].Cells[5].Value.ToString());
+            auto.FechaVenta = dgvAutos.Rows[rowIdx].Cells[6].Value.ToString();
+            auto.Imagen = dgvAutos.Rows[rowIdx].Cells[8].Value.ToString();
+            auto.Detalles = dgvAutos.Rows[rowIdx].Cells[9].Value.ToString();
         }
 
         private void Buscar(object sender, KeyEventArgs e)
@@ -100,25 +117,25 @@ namespace BasicCrud
                 BindingList<Auto> _newBindingList = new BindingList<Auto>();
                 if (e.KeyData == Keys.Enter)
                 {
-                    switch(filterBy)
+                    switch (filterBy)
                     {
                         case "id":
-                            _filter = listAutos.ToList().Where((auto) => auto.ID == int.Parse(txtBuscar.Text)).ToList();
+                            _filter = listAutos.ToList().Where((auto) => auto.ID.ToString().StartsWith(txtBuscar.Text)).ToList();
                             break;
                         case "marca":
-                            _filter = listAutos.ToList().Where((auto) => auto.Marca == txtBuscar.Text).ToList();
+                            _filter = listAutos.ToList().Where((auto) => auto.Marca.StartsWith(txtBuscar.Text)).ToList();
                             break;
                         case "modelo":
-                            _filter = listAutos.ToList().Where((auto) => auto.Modelo == txtBuscar.Text).ToList();
+                            _filter = listAutos.ToList().Where((auto) => auto.Modelo.StartsWith(txtBuscar.Text)).ToList();
                             break;
                         case "año":
-                            _filter = listAutos.ToList().Where((auto) => auto.Anio == int.Parse(txtBuscar.Text)).ToList();
+                            _filter = listAutos.ToList().Where((auto) => auto.Anio.ToString().StartsWith(txtBuscar.Text)).ToList();
                             break;
                         case "precio":
-                            _filter = listAutos.ToList().Where((auto) => auto.Precio == int.Parse(txtBuscar.Text)).ToList();
+                            _filter = listAutos.ToList().Where((auto) => auto.Precio.ToString().StartsWith(txtBuscar.Text)).ToList();
                             break;
                         case "fecha venta":
-                            _filter = listAutos.ToList().Where((auto) => auto.FechaVenta == txtBuscar.Text).ToList();
+                            _filter = listAutos.ToList().Where((auto) => auto.FechaVenta.StartsWith(txtBuscar.Text)).ToList();
                             break;
                     }
                     _newBindingList = new BindingList<Auto>(_filter);
@@ -130,7 +147,6 @@ namespace BasicCrud
         private void btnRestaura_Click(object sender, EventArgs e)
         {
             txtBuscar.Text = "";
-            //CargarAutos();
             FillTable(listAutos);
         }
 
@@ -138,23 +154,39 @@ namespace BasicCrud
         {
             AutoDAL autoDAL = new AutoDAL();
             listAutos = new BindingList<Auto>(autoDAL.GetAll(ConnectionDAL.GetConnection()));
-            FillTable(listAutos);            
+            FillTable(listAutos);
         }
 
         private void FillTable(BindingList<Auto> autos)
         {
-            CheckedListBox checkedListBox = new CheckedListBox();
-            checkedListBox.Visible = false;
-            checkedListBox.SelectionMode = SelectionMode.One;
-
+            dgvAutos.Rows.Clear();
+            dgvAutos.Refresh();
             for (int idx = 0; idx < autos.Count; idx++)
             {
-                CheckBox select = new CheckBox();
-                select.Checked = false;
-                checkedListBox.Items.Add(select);
-                Image imageAuto = new Bitmap(File.Open(AutoDAL.pathImageFolder + autos[idx].Imagen, FileMode.Open));
-                dgvAutos.Rows.Add(select, autos[idx].ID, autos[idx].Marca, autos[idx].Modelo,
-                    autos[idx].Anio, autos[idx].Precio, autos[idx].FechaVenta, imageAuto, autos[idx].Imagen);
+                FileStream fileStream = new FileStream(AutoDAL.pathImageFolder + autos[idx].Imagen, FileMode.Open);
+                Image imageAuto = new Bitmap(fileStream);
+                dgvAutos.Rows.Add(0, autos[idx].ID, autos[idx].Marca, autos[idx].Modelo,
+                    autos[idx].Anio, autos[idx].Precio, autos[idx].FechaVenta, imageAuto,
+                    autos[idx].Imagen, autos[idx].Detalles);
+                fileStream.Close();
+            }
+        }
+
+        private void CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 0)
+            {
+                if (Convert.ToBoolean(dgvAutos.Rows[e.RowIndex].Cells[0].Value) == true)
+                {
+                    dgvAutos.Rows[e.RowIndex].Cells[0].Value = false;
+                } else
+                {
+                    for (int row = 0; row < dgvAutos.Rows.Count; row++)
+                    {
+                        dgvAutos.Rows[row].Cells[0].Value = false;
+                    }
+                    dgvAutos.Rows[e.RowIndex].Cells[0].Value = true;
+                }
             }
         }
     }

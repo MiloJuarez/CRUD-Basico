@@ -17,6 +17,7 @@ namespace BasicCrud.BLL
         public double Precio { get; set; }
         public string FechaVenta { get; set; }
         public string Imagen { get; set; }
+        public string Detalles { get; set; }
 
         public Auto()
         {
@@ -27,6 +28,7 @@ namespace BasicCrud.BLL
             Precio = 0;
             FechaVenta = "";
             Imagen = "";
+            Detalles = "";
         }
     }
 }

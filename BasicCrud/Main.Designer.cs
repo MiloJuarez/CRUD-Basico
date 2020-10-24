@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label1 = new System.Windows.Forms.Label();
             this.btnModificar = new System.Windows.Forms.Button();
@@ -40,12 +39,8 @@
             this.txtBuscar = new System.Windows.Forms.TextBox();
             this.dgvAutos = new System.Windows.Forms.DataGridView();
             this.autosBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.dataSetAutos = new BasicCrud.dataSetAutos();
             this.autosBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.catalogo_autosDataSet = new BasicCrud.catalogo_autosDataSet();
             this.btnAgregar = new System.Windows.Forms.Button();
-            this.autosTableAdapter = new BasicCrud.catalogo_autosDataSetTableAdapters.autosTableAdapter();
-            this.autosTableAdapter1 = new BasicCrud.dataSetAutosTableAdapters.autosTableAdapter();
             this.select = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.marca = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -55,11 +50,12 @@
             this.fecha_venta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.imagen = new System.Windows.Forms.DataGridViewImageColumn();
             this.img_path = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.detalle = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.autoBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAutos)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.autosBindingSource1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataSetAutos)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.autosBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.catalogo_autosDataSet)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.autoBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -115,6 +111,7 @@
             // 
             // cmbFiltrar
             // 
+            this.cmbFiltrar.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbFiltrar.FormattingEnabled = true;
             this.cmbFiltrar.Items.AddRange(new object[] {
             "ID",
@@ -122,11 +119,12 @@
             "Modelo",
             "Año",
             "Precio",
-            "Fecha venta"});
+            "Fecha Venta"});
             this.cmbFiltrar.Location = new System.Drawing.Point(446, 47);
             this.cmbFiltrar.Name = "cmbFiltrar";
             this.cmbFiltrar.Size = new System.Drawing.Size(139, 21);
             this.cmbFiltrar.TabIndex = 6;
+            this.cmbFiltrar.Tag = "";
             // 
             // txtBuscar
             // 
@@ -155,39 +153,29 @@
             this.precio,
             this.fecha_venta,
             this.imagen,
-            this.img_path});
+            this.img_path,
+            this.detalle});
             this.dgvAutos.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvAutos.Location = new System.Drawing.Point(16, 85);
             this.dgvAutos.Name = "dgvAutos";
             this.dgvAutos.ReadOnly = true;
             this.dgvAutos.RowHeadersVisible = false;
-            dataGridViewCellStyle2.Padding = new System.Windows.Forms.Padding(3);
-            this.dgvAutos.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Padding = new System.Windows.Forms.Padding(3);
+            this.dgvAutos.RowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvAutos.RowTemplate.Height = 80;
-            this.dgvAutos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.dgvAutos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvAutos.Size = new System.Drawing.Size(753, 238);
             this.dgvAutos.TabIndex = 8;
+            this.dgvAutos.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.CellClick);
             this.dgvAutos.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.Seleccionar);
             // 
             // autosBindingSource1
             // 
             this.autosBindingSource1.DataMember = "autos";
-            this.autosBindingSource1.DataSource = this.dataSetAutos;
-            // 
-            // dataSetAutos
-            // 
-            this.dataSetAutos.DataSetName = "dataSetAutos";
-            this.dataSetAutos.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // autosBindingSource
             // 
             this.autosBindingSource.DataMember = "autos";
-            this.autosBindingSource.DataSource = this.catalogo_autosDataSet;
-            // 
-            // catalogo_autosDataSet
-            // 
-            this.catalogo_autosDataSet.DataSetName = "catalogo_autosDataSet";
-            this.catalogo_autosDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // btnAgregar
             // 
@@ -200,26 +188,14 @@
             this.btnAgregar.UseVisualStyleBackColor = false;
             this.btnAgregar.Click += new System.EventHandler(this.btnAgregar_Click);
             // 
-            // autosTableAdapter
-            // 
-            this.autosTableAdapter.ClearBeforeFill = true;
-            // 
-            // autosTableAdapter1
-            // 
-            this.autosTableAdapter1.ClearBeforeFill = true;
-            // 
             // select
             // 
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.NullValue = false;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.select.DefaultCellStyle = dataGridViewCellStyle1;
-            this.select.FalseValue = "false";
+            this.select.FalseValue = "0";
             this.select.FillWeight = 25F;
             this.select.HeaderText = "Select";
             this.select.Name = "select";
             this.select.ReadOnly = true;
-            this.select.TrueValue = "true";
+            this.select.TrueValue = "1";
             // 
             // id
             // 
@@ -280,6 +256,17 @@
             this.img_path.ReadOnly = true;
             this.img_path.Visible = false;
             // 
+            // detalle
+            // 
+            this.detalle.HeaderText = "detalle";
+            this.detalle.Name = "detalle";
+            this.detalle.ReadOnly = true;
+            this.detalle.Visible = false;
+            // 
+            // autoBindingSource
+            // 
+            this.autoBindingSource.DataSource = typeof(BasicCrud.BLL.Auto);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -298,9 +285,8 @@
             this.Text = "Concesionaria de Autos";
             ((System.ComponentModel.ISupportInitialize)(this.dgvAutos)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.autosBindingSource1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataSetAutos)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.autosBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.catalogo_autosDataSet)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.autoBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -317,12 +303,9 @@
         private System.Windows.Forms.ComboBox cmbFiltrar;
         private System.Windows.Forms.TextBox txtBuscar;
         private System.Windows.Forms.DataGridView dgvAutos;
-        private catalogo_autosDataSet catalogo_autosDataSet;
         private System.Windows.Forms.BindingSource autosBindingSource;
-        private catalogo_autosDataSetTableAdapters.autosTableAdapter autosTableAdapter;
-        private dataSetAutos dataSetAutos;
         private System.Windows.Forms.BindingSource autosBindingSource1;
-        private dataSetAutosTableAdapters.autosTableAdapter autosTableAdapter1;
+        private System.Windows.Forms.BindingSource autoBindingSource;
         private System.Windows.Forms.DataGridViewCheckBoxColumn select;
         private System.Windows.Forms.DataGridViewTextBoxColumn id;
         private System.Windows.Forms.DataGridViewTextBoxColumn marca;
@@ -332,6 +315,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn fecha_venta;
         private System.Windows.Forms.DataGridViewImageColumn imagen;
         private System.Windows.Forms.DataGridViewTextBoxColumn img_path;
+        private System.Windows.Forms.DataGridViewTextBoxColumn detalle;
     }
 }
 

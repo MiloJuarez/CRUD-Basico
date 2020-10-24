@@ -47,18 +47,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BLL\Auto.cs" />
-    <Compile Include="catalogo_autosDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>catalogo_autosDataSet.xsd</DependentUpon>
-    </Compile>
     <Compile Include="DAL\AutoDAL.cs" />
     <Compile Include="DAL\ConnectionDAL.cs" />
-    <Compile Include="dataSetAutos.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>dataSetAutos.xsd</DependentUpon>
-    </Compile>
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -89,28 +79,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="catalogo_autosDataSet.xsc">
-      <DependentUpon>catalogo_autosDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="catalogo_autosDataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>catalogo_autosDataSet.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="catalogo_autosDataSet.xss">
-      <DependentUpon>catalogo_autosDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="dataSetAutos.xsc">
-      <DependentUpon>dataSetAutos.xsd</DependentUpon>
-    </None>
-    <None Include="dataSetAutos.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>dataSetAutos.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="dataSetAutos.xss">
-      <DependentUpon>dataSetAutos.xsd</DependentUpon>
-    </None>
+    <None Include="Properties\DataSources\BasicCrud.BLL.Auto.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

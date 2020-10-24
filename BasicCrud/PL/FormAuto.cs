@@ -34,30 +34,39 @@ namespace BasicCrud.PL
 
         private void button1_Click(object sender, EventArgs e)
         {
-            int rowaffected = 0;
-            AutoDAL autoDAL = new AutoDAL();
-            rowaffected = autoDAL.InsertUpdateAuto(ObtenerAuto(), ConnectionDAL.GetConnection());
-            if (rowaffected != 0)
+            if (txtMarca.Text.Length > 0 && txtModelo.Text.Length > 0)
             {
-                main.CargarAutos();
-                Dispose();
+                int rowaffected = 0;
+                AutoDAL autoDAL = new AutoDAL();
+                rowaffected = autoDAL.InsertUpdateAuto(ObtenerAuto(), ConnectionDAL.GetConnection());
+                if (rowaffected != 0)
+                {
+                    main.CargarAutos();
+                    Dispose();
+                }
+                else
+                {
+                    string accion = auto.ID == 0 ? "inserción" : "modificación";
+                    MessageBox.Show("Error de " + accion, "Fallo de operación",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             } else
             {
-                string accion = auto.ID == 0 ? "inserción" : "modificación";
-                MessageBox.Show("Error de " + accion, "Fallo de operación",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Llene los campos vacíos", "Datos incompletos",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
         private Auto ObtenerAuto()
         {
-            string newImageName = DateTime.Now.ToString().Replace('/', '-').Replace(' ', '-').Replace(':', '-')+ selectedIMG;
+            string newImageName = DateTime.Now.ToString().Replace('/', '-').Replace(' ', '-').Replace(':', '-') + selectedIMG;
             string newPath = AutoDAL.pathImageFolder + newImageName;
             auto.Marca = txtMarca.Text;
             auto.Modelo = txtModelo.Text;
             auto.Anio = int.Parse(txtAnio.Text);
             auto.Precio = double.Parse(txtPrecio.Text);
             auto.FechaVenta = dtFechaVenta.Text;
+            auto.Detalles = rtxtDescripcion.Text;
             if (selectedIMG.Length > 0)
             {
                 if (auto.Imagen != defaultIMG && auto.ID != 0)
@@ -82,9 +91,12 @@ namespace BasicCrud.PL
                 txtAnio.Text = auto.Anio.ToString();
                 txtPrecio.Text = auto.Precio.ToString();
                 dtFechaVenta.Text = auto.FechaVenta;
+                rtxtDescripcion.Text = auto.Detalles;
                 if (auto.Imagen != defaultIMG)
                 {
-                    picBoxAutoImg.Image = new Bitmap(File.Open(AutoDAL.pathImageFolder + auto.Imagen, FileMode.Open));
+                    FileStream fileStream = new FileStream(AutoDAL.pathImageFolder + auto.Imagen, FileMode.Open);
+                    picBoxAutoImg.Image = new Bitmap(fileStream);
+                    fileStream.Close();
                 }
             }
         }
