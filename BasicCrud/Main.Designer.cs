@@ -101,6 +101,7 @@
             // 
             // btnRestaura
             // 
+            this.btnRestaura.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRestaura.Image = global::BasicCrud.Properties.Resources.close1;
             this.btnRestaura.Location = new System.Drawing.Point(741, 47);
             this.btnRestaura.Name = "btnRestaura";
@@ -111,6 +112,7 @@
             // 
             // cmbFiltrar
             // 
+            this.cmbFiltrar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbFiltrar.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbFiltrar.FormattingEnabled = true;
             this.cmbFiltrar.Items.AddRange(new object[] {
@@ -128,6 +130,7 @@
             // 
             // txtBuscar
             // 
+            this.txtBuscar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.txtBuscar.Location = new System.Drawing.Point(591, 47);
             this.txtBuscar.Name = "txtBuscar";
             this.txtBuscar.Size = new System.Drawing.Size(144, 20);
@@ -139,7 +142,8 @@
             this.dgvAutos.AllowUserToAddRows = false;
             this.dgvAutos.AllowUserToDeleteRows = false;
             this.dgvAutos.AllowUserToResizeRows = false;
-            this.dgvAutos.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.dgvAutos.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvAutos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvAutos.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
@@ -164,7 +168,7 @@
             this.dgvAutos.RowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvAutos.RowTemplate.Height = 80;
             this.dgvAutos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvAutos.Size = new System.Drawing.Size(753, 238);
+            this.dgvAutos.Size = new System.Drawing.Size(753, 237);
             this.dgvAutos.TabIndex = 8;
             this.dgvAutos.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.CellClick);
             this.dgvAutos.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.Seleccionar);
